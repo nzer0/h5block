@@ -56,6 +56,7 @@ class _FileWrap(object):
     def __init__(self, file_descriptor):
         self.fd = file_descriptor
         self.members = [m[0] for m in inspect.getmembers(self.fd)]
+        self.dic = dict()
 
     def __str__(self):
         return "<h5block "+self.fd.__str__()+" >"
@@ -64,7 +65,7 @@ class _FileWrap(object):
         return self.__str__()
 
     def __getitem__(self, key):
-        return self.fd.__getitem__(key)
+        return self.dic[key]
 
     def __setitem__(self, key, value):
         return self.fd.__setitem__(key, value)
@@ -98,6 +99,7 @@ class _FileWrap(object):
         ds = self.fd.create_dataset(*args, **kwargs)
         self.fd.flush()
         dw = _DsetWrap(self.fd, ds)
+        self.dic[args[0]] = dw
         return dw
 
 def File(*args, **kwargs):
