@@ -1,5 +1,6 @@
 import h5py
 import inspect
+import numpy as np
 
 
 class _DsetWrap(object):
@@ -31,6 +32,7 @@ class _DsetWrap(object):
         return self.ds.__setitem__(key, value)
 
     def extend(self, data, axis=None):
+        data = np.array(data)
         if self.ds is None: # handling auto-init
             if axis is None:
                 raise ValueError("Keyword arggument 'axis' has to be given for auto-initialization")
